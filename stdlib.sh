@@ -1304,22 +1304,7 @@ on_git_branch() {
   fi
 }
 
-# Usage: __main__ <cmd> [...<args>]
-#
-# Used by rc.go
-__main__() {
-  # reserve stdout for dumping
-  exec 3>&1
-  exec 1>&2
-
-  __dump_at_exit() {
-    local ret=$?
-    "$direnv" dump json "" >&3
-    trap - EXIT
-    exit "$ret"
-  }
-  trap __dump_at_exit EXIT
-
+_load_libraries() {
   # load direnv libraries
   for lib in "$direnv_config_dir/lib/"*.sh; do
     # shellcheck disable=SC1090
@@ -1334,6 +1319,25 @@ __main__() {
     # shellcheck disable=SC1090,SC1091
     source "$HOME/.direnvrc" >&2
   fi
+}
+
+# Usage: __main__ <cmd> [...<args>]
+#
+# Used by rc.go
+__main__() {
+  # reserve stdout for dumping
+  # exec 3>&1
+  # exec 1>&2
+
+  # __dump_at_exit() {
+  #   local ret=$?
+  #   "$direnv" dump json "" >&3
+  #   trap - EXIT
+  #   exit "$ret"
+  # }
+  # trap __dump_at_exit EXIT
+
+  _load_libraries
 
   # and finally load the .envrc
   "$@"
