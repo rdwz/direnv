@@ -46,6 +46,8 @@ func DetectShell(target string) Shell {
 		return Bash
 	case "elvish":
 		return Elvish
+	case "environ":
+		return Environ
 	case "fish":
 		return Fish
 	case "gha":
